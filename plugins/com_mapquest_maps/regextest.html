@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>Address Regular Expression Tester</title>
+    <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+    
+    <script>
+    regexes={
+        us_address1: /\b((\d{1,5}(\ 1\/[234])?(\x20([a-z])+)+\x20)\s{1,2}(((((APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(LIP|PC|T(E|OP))|TRLR|UNIT)\x20\w{1,5})|(BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR)\.?)\s{1,2})?)(([a-z])+(\.?)(\x20([a-z])+){0,2})\,?\x20(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADL N]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD] |T[NX]|UT|V[AIT]|W[AIVY])\x20(\d{5}(-\d {4})?))\b/im,
+        
+        /************ (  house number         )( fractional    )(   predirectional                                                                      )((numeric street+suffix         ) (street words/suffix))(postdirectional                                                                       )  ((  unit label                ) (pound sign  ) (secondary range       )) (city                                    )(state                                                                                                                                                     )(zip and +4                          )                                                                   */
+        us_simple: /\b(\d{1,10}([.\-]\d{1,10})?(\x20+1\/[234])?)(\x20+(N[EW]?|S[EW]?|E|W|NORTH|SOUTH|EAST|WEST|NORTHEAST|NORTHWEST|SOUTHEAST|SOUTHWEST))?((\x20+\d{1,5}(TH|ND|ST)\x20+\w+)|(\x20+(\w+|\d+)){1,3})(\x20+(N[EW]?|S[EW]?|E|W|NORTH|SOUTH|EAST|WEST|NORTHEAST|NORTHWEST|SOUTHEAST|SOUTHWEST))?((((\x20*\,\x20*)|\x20+)\w{1,5})?(\x20*\#\x20*)?(\x20*[\w\d]+(\-[\w\d]+)))?(((\x20*\,\x20*)|\x20+)\w+(\x20+\w+){0,2})(((\x20*\,\x20*)|\x20+)(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADL N]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD] |T[NX]|UT|V[AIT]|W[AIVY]))(((\x20*\,\x20*)|\x20+)\d{5}(-\d{4})?)?\b/i,
+        
+        secaddr: /(((APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(LIP|PC|T(E|OP))|TRLR|UNIT)\x20*(\#\x20*)?\w{1,5})|(BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR)\.?)([\x20\,]+[a-zA-Z]+){0,3}\b/ig,
+        
+        primaddr: /\b(\d{1,10}([.\-]\d{1,10})?(\x20+1\/[234])?)(\x20+(N[EW]?|S[EW]?|E|W|NORTH|SOUTH|EAST|WEST|NORTHEAST|NORTHWEST|SOUTHEAST|SOUTHWEST))?((\x20+\d{1,5}(TH|ND|ST)\x20+\w+)|(\x20+\w+){1,5})(\x20+(N[EW]?|S[EW]?|E|W|NORTH|SOUTH|EAST|WEST|NORTHEAST|NORTHWEST|SOUTHEAST|SOUTHWEST))(((\x20*\,\x20*)|\x20+)+[a-zA-Z]+(\x20+[a-zA-Z]+){0,2})?\x20*/ig
+    };
+    testdata=[
+        "The office is at 555 17th St Suite 1600 Denver, CO 80209.  Stop by at 1pm. ",
+        "My home address is 485 s york st denver co.  What is yours?",
+        "The party is at 13569 150th ct n, jupiter, FL 33478",
+        "Meet me at 1604 Cambay Ave #3 Orlando FL at ask for steve",
+        "Meet me at 1604 Cambay Ave unit 3 Orlando FL at ask for steve",
+        "Meet me at 1604 Cambay Ave unit #3 Orlando FL at ask for steve",
+        
+        "The office is 555 17th St Suite 1600 Denver CO .  Don't be late.",
+        "The office is 1604 pinyon dr unit 3b castle rock co .  Don't be late."
+    ];
+    
+    function runtest() {
+        var input, k, r, ol=$('#outlist'), li, match, matchul, matchli;
+        for (var i=0; i<testdata.length; i++) {
+            input=testdata[i];
+            li=$(document.createElement('li'));
+            li.text(input);
+            ol.append(li);
+            
+            /* run each regex */
+            matchul=$(document.createElement('ul'));
+            li.append(matchul);
+            for (k in regexes) {
+                r=regexes[k];
+                if (!r instanceof RegExp) continue;
+                
+                match=input.replace(r, function(s) {
+                    return '<b>' + s + '</b>';
+                });
+                if (match==input) continue; /* no match */
+                
+                matchli=$(document.createElement('li'));
+                matchli.html('<i>' + k + '</i>: "' + match + '"');
+                matchul.append(matchli);
+            }
+        }
+    }
+    
+    </script>
+</head>
+<body onload="runtest()">
+    <h1>Test data</h1>
+    <ol id="outlist">
+    </ol>
+
+</body>
+</html>

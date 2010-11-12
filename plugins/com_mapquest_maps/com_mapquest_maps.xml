@@ -1,0 +1,15 @@
+<zimlet name="com_mapquest_maps" version="1.0" description="Hyper-link addresses to MapQuest">
+    <resource>ajax_loader.gif</resource>
+    <include>com_mapquest_maps_support.js</include>
+    <handlerObject>com_mapquest_maps_HandlerObject</handlerObject>
+    
+    <contentObject>
+        <matchOn>
+            <!-- the zimlet match method actually does the work, but we have
+                 to include this clause or the matches won't be highlighted
+            -->
+            <regex attrs="igm">.</regex>
+        </matchOn>
+    </contentObject>
+</zimlet>
+
