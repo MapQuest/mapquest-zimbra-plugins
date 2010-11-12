@@ -16,6 +16,10 @@ Plugins:
         Upon submitting, short links are generated and preview options are
         available.
 
+Latest built versions are stored in the packages directory for easy access.  These
+zip files can be uploaded directly to the Zimbra admin tool for enabling new
+zimlets.
+        
 This software is distributed under the following MIT License
 
 Copyright (c) 2010  MapQuest
